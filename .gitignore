@@ -1,0 +1,27 @@
+# Virtualenv
+opencv-qt-headless/
+env/
+*.pyc
+__pycache__/
+
+# Arquivos de compilação
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+
+# Arquivos de ambiente (por exemplo, .env)
+.env
+
+# Arquivos gerados pelo IDE/Editor de código (por exemplo, VS Code)
+.vscode/
+.idea/
+
+# Arquivos de saída e resultados (por exemplo, pastas "build" e "dist" do setuptools)
+build/
+dist/
+
+# Dependências geradas (por exemplo, "requirements.txt" do pip)
+*.egg-info/
+*.egg/
