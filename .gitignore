@@ -25,3 +25,6 @@ dist/
 # Dependências geradas (por exemplo, "requirements.txt" do pip)
 *.egg-info/
 *.egg/
+
+# Imagens para processamento
+/assets/
