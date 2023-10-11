@@ -1,5 +1,5 @@
 # Virtualenv
-opencv-qt-headless/
+venv/
 env/
 *.pyc
 __pycache__/

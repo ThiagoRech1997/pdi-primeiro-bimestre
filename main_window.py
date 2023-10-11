@@ -1,8 +1,6 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-import os
-os.environ['QT_QPA_PLATFORM'] = 'wayland'
-
+from PyQt5.QtCore import *
 import cv2
 import numpy as np
 from operation import Operation
@@ -421,4 +419,87 @@ class MainWindow(QMainWindow):
                 self.operations_toDo.append([name, [*args]])
                 self.operations()
 
-    #... (todos os métodos da classe MainWindow)
+    def operations(self):
+        image_copy = self.selected_image.copy()
+        self.history_list.clear()
+
+        for id in self.operations_toDo:
+            name = id[0]
+            args = id[1]
+
+            if name == "Cor" and len(image_copy.shape) == 3:
+                    tipo_conversao = args[0]
+                    gray_image = cv2.cvtColor(image_copy, self.array[tipo_conversao])
+                    image_copy = gray_image
+                    self.history_list.addItem(name + " " + self.colors[tipo_conversao])
+
+            if name == "Gaussian Blur":
+                    tamanho_kernel = args[0]
+                    desvio_padrao = args[1]
+                    filtered_image = cv2.GaussianBlur(image_copy , (tamanho_kernel, tamanho_kernel), desvio_padrao)
+                    image_copy = filtered_image
+                    self.history_list.addItem(name)
+                    
+            if name == "Canny":
+                    limiar_minimo = args[0]
+                    limiar_maximo = args[1]
+                    edge_image = cv2.Canny(image_copy, limiar_minimo, limiar_maximo)
+                    image_copy = edge_image
+                    self.history_list.addItem(name)
+                
+            if name == "Binarizar":
+                    limiar = args[0]
+                    valor_maximo = args[1]
+                    _, binary_image = cv2.threshold(image_copy, limiar, valor_maximo, cv2.THRESH_BINARY)
+                    image_copy = binary_image
+                    self.history_list.addItem(name)
+                
+            if name == "Erosão":
+                    kernel = args[0]
+                    iteracoes = args[1]
+                    kernel = np.ones((kernel, kernel), np.uint8)
+                    erosion_image = cv2.erode(image_copy, kernel, iterations=iteracoes)
+                    image_copy = erosion_image
+                    self.history_list.addItem(name)
+                    
+            if name == "Dilatação":
+                    kernel = args[0]
+                    iteracoes = args[1]
+                    kernel = np.ones((kernel, kernel), np.uint8)
+                    dilation_image = cv2.dilate(image_copy, kernel, iterations=iteracoes)
+                    image_copy = dilation_image
+                    self.history_list.addItem(name)
+                    
+        self.display_image(image_copy)
+
+    def remove_item(self, item=None):
+        index = self.history_list.row(item)
+        self.history_list.takeItem(index)
+        self.operations_toDo.pop(index)
+        self.operations()
+
+    def clear_history(self):
+        self.operations_toDo.clear()
+        self.history_list.clear()
+        self.operations()
+
+    def open_image(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        
+        image_path, _ = QFileDialog.getOpenFileName(self, "Selecionar Imagem", "", "Imagens (*.png *.jpg *.bmp *.gif);;Todos os Arquivos (*)", options=options)
+
+        if image_path:
+            try:
+                self.selected_image = cv2.imread(image_path)
+                self.display_image(self.selected_image)
+                self.open_button.setDisabled(False)
+            except Exception as e:
+                print("Erro ao abrir a imagem:", str(e))
+        else:
+            print("Nenhuma imagem selecionada.")
+    
+
+    def display_image(self, image_copy):
+        if image_copy is not None:
+            cv2.imshow("Imagem", image_copy) 
