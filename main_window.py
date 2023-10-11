@@ -281,7 +281,7 @@ class MainWindow(QMainWindow):
         self.lateral_layout.addWidget(self.history_list)
 
         self.clear_button = QPushButton("Clear Filters")
-        self.clear_button.clicked.connect(self.clear_history)
+        self.clear_button.clicked.connect(self.clear_filters)
         self.lateral_layout.addWidget(self.clear_button)
 
         self.lateral_widget.setLayout(self.lateral_layout)
@@ -478,7 +478,7 @@ class MainWindow(QMainWindow):
         self.operations_toDo.pop(index)
         self.operations()
 
-    def clear_history(self):
+    def clear_filters(self):
         self.operations_toDo.clear()
         self.history_list.clear()
         self.operations()
