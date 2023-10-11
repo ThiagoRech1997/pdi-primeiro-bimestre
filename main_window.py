@@ -8,13 +8,13 @@ from operation import Operation
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Cores, Filtros, Binarização e Morfologia")
+        self.setWindowTitle("Colors, Filters, Binarization and Morphology")
         self.setGeometry(100, 100, 350, 500)
 
         self.selected_image = None
         self.selected_operation = None
         self.operations_toDo = []
-        self.colors = ["Cinza", "XYZ", "YCrCb", "HSV", "HLS", "CIE L*a*b*"]
+        self.colors = ["Gray", "XYZ", "YCrCb", "HSV", "HLS", "CIE L*a*b*"]
         self.array = [
             cv2.COLOR_BGR2GRAY,
             cv2.COLOR_BGR2XYZ,
@@ -24,12 +24,12 @@ class MainWindow(QMainWindow):
             cv2.COLOR_BGR2LAB
         ]
         self.default_operations =  [
-            Operation("Cor", 0),
+            Operation("Color", 0),
             Operation("Gaussian Blur", 5, 0), 
             Operation("Canny", 100, 200),
-            Operation("Binarizar", 127, 255),
-            Operation("Erosão", 3, 1),
-            Operation("Dilatação", 3, 1)
+            Operation("Binarize", 127, 255),
+            Operation("Erosion", 3, 1),
+            Operation("Dilation", 3, 1)
         ]
 
         #-------------------------------
@@ -38,7 +38,7 @@ class MainWindow(QMainWindow):
         self.lateral_widget = QWidget()
         self.lateral_layout = QVBoxLayout()
 
-        self.open_button = QPushButton("Abrir Imagem")
+        self.open_button = QPushButton("Upload Image")
         self.open_button.setFixedSize(100, 25)
         self.open_button.clicked.connect(self.open_image)
         self.lateral_layout.addWidget(self.open_button, alignment=Qt.AlignCenter)
@@ -52,7 +52,7 @@ class MainWindow(QMainWindow):
         #-------------------------------
         
         self.operation_layout = QVBoxLayout()
-        self.operation_layout.addWidget(QLabel("Tipo de Cor"))
+        self.operation_layout.addWidget(QLabel("Color Type"))
         self.combobox = QComboBox()
         self.combobox.addItems(self.colors)
         self.combobox.currentIndexChanged.connect(self.selectionchange1)
@@ -65,7 +65,7 @@ class MainWindow(QMainWindow):
         #-------------------------------
         self.operation_layout2 = QVBoxLayout()
         
-        self.operation_layout2.addWidget(QLabel("Tamanho do Kernel"))
+        self.operation_layout2.addWidget(QLabel("Kernel Size"))
         self.slider_layout2 = QHBoxLayout()
         self.kernel_size = QSlider(Qt.Horizontal)
         self.kernel_size.setMinimum(1)
@@ -81,7 +81,7 @@ class MainWindow(QMainWindow):
         self.slider_layout2.addWidget(self.label2)
         self.operation_layout2.addLayout(self.slider_layout2)
         
-        self.operation_layout2.addWidget(QLabel("Desvio Padrão"))
+        self.operation_layout2.addWidget(QLabel("Standard deviation"))
         self.slider_layout3 = QHBoxLayout()
         self.desvio_padrao = QSlider(Qt.Horizontal)
         self.desvio_padrao.setMinimum(0)
@@ -106,7 +106,7 @@ class MainWindow(QMainWindow):
         
         self.operation_layout3 = QVBoxLayout()
         
-        self.operation_layout3.addWidget(QLabel("Limiar Mínimo"))
+        self.operation_layout3.addWidget(QLabel("Minimum Threshold"))
         self.slider_layout4 = QHBoxLayout()
         self.limiar_minimo = QSlider(Qt.Horizontal)
         self.limiar_minimo.setMinimum(0)
@@ -122,7 +122,7 @@ class MainWindow(QMainWindow):
         self.slider_layout4.addWidget(self.label4)
         self.operation_layout3.addLayout(self.slider_layout4)
         
-        self.operation_layout3.addWidget(QLabel("Limiar Máximo"))
+        self.operation_layout3.addWidget(QLabel("Maximum Threshold"))
         self.slider_layout5 = QHBoxLayout()
         self.limiar_maximo = QSlider(Qt.Horizontal)
         self.limiar_maximo.setMinimum(0)
@@ -147,7 +147,7 @@ class MainWindow(QMainWindow):
         
         self.operation_layout4 = QVBoxLayout()
         
-        self.operation_layout4.addWidget(QLabel("Limiar"))
+        self.operation_layout4.addWidget(QLabel("Threshold"))
         self.slider_layout6 = QHBoxLayout()
         self.limiar = QSlider(Qt.Horizontal)
         self.limiar.setMinimum(0)
@@ -163,7 +163,7 @@ class MainWindow(QMainWindow):
         self.slider_layout6.addWidget(self.label6)
         self.operation_layout4.addLayout(self.slider_layout6)
         
-        self.operation_layout4.addWidget(QLabel("Valor Máximo"))
+        self.operation_layout4.addWidget(QLabel("Maximum value"))
         self.slider_layout7 = QHBoxLayout()
         self.valor_maximo = QSlider(Qt.Horizontal)
         self.valor_maximo.setMinimum(0)
@@ -188,7 +188,7 @@ class MainWindow(QMainWindow):
         
         self.operation_layout5 = QVBoxLayout()
         
-        self.operation_layout5.addWidget(QLabel("Tamanho do Kernel"))
+        self.operation_layout5.addWidget(QLabel("Kernel Size"))
         self.slider_layout8 = QHBoxLayout()
         self.kernel_size2 = QSlider(Qt.Horizontal)
         self.kernel_size2.setMinimum(1)
@@ -204,7 +204,7 @@ class MainWindow(QMainWindow):
         self.slider_layout8.addWidget(self.label8)
         self.operation_layout5.addLayout(self.slider_layout8)
 
-        self.operation_layout5.addWidget(QLabel("Iterações"))
+        self.operation_layout5.addWidget(QLabel("Iterations"))
         self.slider_layout9 = QHBoxLayout()
         self.iteracoes = QSlider(Qt.Horizontal)
         self.iteracoes.setMinimum(1)
@@ -230,7 +230,7 @@ class MainWindow(QMainWindow):
         
         self.operation_layout6 = QVBoxLayout()
         
-        self.operation_layout6.addWidget(QLabel("Tamanho do Kernel"))
+        self.operation_layout6.addWidget(QLabel("Kernel Size"))
         self.slider_layout10 = QHBoxLayout()
         self.kernel_size3 = QSlider(Qt.Horizontal)
         self.kernel_size3.setMinimum(1)
@@ -246,7 +246,7 @@ class MainWindow(QMainWindow):
         self.slider_layout10.addWidget(self.label10)
         self.operation_layout6.addLayout(self.slider_layout10)
 
-        self.operation_layout6.addWidget(QLabel("Iterações"))
+        self.operation_layout6.addWidget(QLabel("Iterations"))
         self.slider_layout11 = QHBoxLayout()
         self.iteracoes2 = QSlider(Qt.Horizontal)
         self.iteracoes2.setMinimum(1)
@@ -269,7 +269,7 @@ class MainWindow(QMainWindow):
         
         #-------------------------------
         
-        self.open_button = QPushButton("Aplicar Operação")
+        self.open_button = QPushButton("Apply Filter")
         self.open_button.clicked.connect(self.apply_operation)
         #dimuir o tamanho do botão e alinhar no meio
         self.open_button.setFixedSize(100, 25)
@@ -280,7 +280,7 @@ class MainWindow(QMainWindow):
         self.history_list.itemClicked.connect(self.remove_item)
         self.lateral_layout.addWidget(self.history_list)
 
-        self.clear_button = QPushButton("Limpar Histórico")
+        self.clear_button = QPushButton("Clear Filters")
         self.clear_button.clicked.connect(self.clear_history)
         self.lateral_layout.addWidget(self.clear_button)
 
@@ -340,37 +340,37 @@ class MainWindow(QMainWindow):
     def selectionchange6(self, value):
         values = (value, self.default_operations[3].args[1])
         self.default_operations[3].args = values
-        self.changeValues(values, "Binarizar")
+        self.changeValues(values, "Binarize")
         self.label6.setText(str(value))
              
     def selectionchange7(self, value):
         values = (self.default_operations[3].args[0], value)
         self.default_operations[3].args = values
-        self.changeValues(values, "Binarizar")
+        self.changeValues(values, "Binarize")
         self.label7.setText(str(value))
         
     def selectionchange8(self, value):
         values = (value, self.default_operations[4].args[1])
         self.default_operations[4].args = values
-        self.changeValues(values, "Erosão")
+        self.changeValues(values, "Erosion")
         self.label8.setText(str(value))
         
     def selectionchange9(self, value):
         values = (self.default_operations[4].args[0], value)
         self.default_operations[4].args = values
-        self.changeValues(values, "Erosão")
+        self.changeValues(values, "Erosion")
         self.label9.setText(str(value))
         
     def selectionchange10(self, value):
         values = (value, self.default_operations[5].args[1])
         self.default_operations[5].args = values
-        self.changeValues(values, "Dilatação")
+        self.changeValues(values, "Dilation")
         self.label10.setText(str(value))
         
     def selectionchange11(self, value):
         values = (self.default_operations[5].args[0], value)
         self.default_operations[5].args = values
-        self.changeValues(values, "Dilatação")
+        self.changeValues(values, "Dilation")
         self.label11.setText(str(value))
         
     def get_current_operation(self, item):
@@ -390,17 +390,17 @@ class MainWindow(QMainWindow):
         self.operation_widget5.hide()
         self.operation_widget6.hide()
 
-        if name == "Cor":
+        if name == "Color":
             self.operation_widget.show()
         elif name == "Gaussian Blur":
             self.operation_widget2.show()
         elif name == "Canny":
             self.operation_widget3.show()
-        elif name == "Binarizar":
+        elif name == "Binarize":
             self.operation_widget4.show()
-        elif name == "Erosão":
+        elif name == "Erosion":
             self.operation_widget5.show()
-        elif name == "Dilatação":
+        elif name == "Dilation":
             self.operation_widget6.show()
 
     def apply_operation(self):
@@ -410,7 +410,7 @@ class MainWindow(QMainWindow):
             item_history = None
 
             if args is not None:
-                if name == "Cor":
+                if name == "Color":
                     item_history = name + " " + self.colors[args[0]]
                 else:
                     item_history = name
@@ -427,7 +427,7 @@ class MainWindow(QMainWindow):
             name = id[0]
             args = id[1]
 
-            if name == "Cor" and len(image_copy.shape) == 3:
+            if name == "Color" and len(image_copy.shape) == 3:
                     tipo_conversao = args[0]
                     gray_image = cv2.cvtColor(image_copy, self.array[tipo_conversao])
                     image_copy = gray_image
@@ -447,14 +447,14 @@ class MainWindow(QMainWindow):
                     image_copy = edge_image
                     self.history_list.addItem(name)
                 
-            if name == "Binarizar":
+            if name == "Binarize":
                     limiar = args[0]
                     valor_maximo = args[1]
                     _, binary_image = cv2.threshold(image_copy, limiar, valor_maximo, cv2.THRESH_BINARY)
                     image_copy = binary_image
                     self.history_list.addItem(name)
                 
-            if name == "Erosão":
+            if name == "Erosion":
                     kernel = args[0]
                     iteracoes = args[1]
                     kernel = np.ones((kernel, kernel), np.uint8)
@@ -462,7 +462,7 @@ class MainWindow(QMainWindow):
                     image_copy = erosion_image
                     self.history_list.addItem(name)
                     
-            if name == "Dilatação":
+            if name == "Dilation":
                     kernel = args[0]
                     iteracoes = args[1]
                     kernel = np.ones((kernel, kernel), np.uint8)
@@ -487,7 +487,7 @@ class MainWindow(QMainWindow):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
         
-        image_path, _ = QFileDialog.getOpenFileName(self, "Selecionar Imagem", "", "Imagens (*.png *.jpg *.bmp *.gif);;Todos os Arquivos (*)", options=options)
+        image_path, _ = QFileDialog.getOpenFileName(self, "Select Image", "", "Image (*.png *.jpg *.bmp *.gif);;All files (*)", options=options)
 
         if image_path:
             try:
@@ -495,11 +495,11 @@ class MainWindow(QMainWindow):
                 self.display_image(self.selected_image)
                 self.open_button.setDisabled(False)
             except Exception as e:
-                print("Erro ao abrir a imagem:", str(e))
+                print("Error loading image:", str(e))
         else:
-            print("Nenhuma imagem selecionada.")
+            print("No images selected.")
     
 
     def display_image(self, image_copy):
         if image_copy is not None:
-            cv2.imshow("Imagem", image_copy) 
+            cv2.imshow("Image", image_copy) 
